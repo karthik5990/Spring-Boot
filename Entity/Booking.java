@@ -9,10 +9,10 @@ public class Booking {
     @Id
     @Column
     Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flight_id")
     private Flight flight;
     @OneToOne(cascade = CascadeType.ALL)

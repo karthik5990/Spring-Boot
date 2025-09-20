@@ -6,6 +6,8 @@ import com.Project_Flight.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +20,9 @@ public class FlightController {
         service.add(flight);
         return "The "+flight.getFlightNumber()+" data has been added...";
     }
-    @GetMapping(value="/flights/search")
-    public List<Flight> search(@RequestParam String source, @RequestParam String destination, @RequestParam("time") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")LocalDateTime date){
-        return service.search(source, destination, date);
+    @PostMapping(value="/flights/search", produces = "application/json")
+    public List<Flight> search(@RequestBody Flight request){
+        return service.search(request.getSource(), request.getDestination(), request.getDate());
     }
     @GetMapping(value="/flights/{id}")
     public Optional<Flight> searchById(@PathVariable Long id){
@@ -31,9 +33,9 @@ public class FlightController {
         return service.retrieve();
     }
     @PutMapping(value="/flights/{id}")
-    public String updateFlight(@PathVariable Long id, @RequestParam("time")@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime timings, @RequestParam("rate") double price, @RequestParam("seats")Integer availableSeats){
-        service.updateFlight(id,timings,price, availableSeats);
-        return "The "+id+" id's Flight data has been updated...";
+    public String updateFlight(@RequestBody Flight flight){
+        service.updateFlight(flight);
+        return "The "+flight.getFlightName()+" id's Flight data has been updated...";
     }
     @DeleteMapping(value="/flights/{id}")
     public String deleteFlight(@PathVariable("id")Long idNo){
