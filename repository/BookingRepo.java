@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface BookingRepo extends CrudRepository<Booking, Long> {
-    public List<BookingDetails> findByUser(User user);
     public List<Booking> findAllByUserId(Long Id);
-
+    boolean existsByUserIdAndFlightIdAndBookingDetails_SeatsBooked(Long userId, Long flightId, Integer seatsBooked);
 }

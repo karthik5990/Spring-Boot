@@ -31,15 +31,18 @@ public class BookingService {
     private BookingDetailsRepo detailsRepo;
 
     public Booking addBooking(Long id, Long userId, Long flightId, BookingDetails bookingDetails) {
+        boolean exists = bookingRepo.existsByUserIdAndFlightIdAndBookingDetails_SeatsBooked(userId, flightId, bookingDetails.getSeatsBooked());
+        if (exists) {
+            throw new RuntimeException("Booking already exists for this user and flight with the same seat count");
+        }
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Flight flight = flightRepo.findById(flightId)
                 .orElseThrow(() -> new RuntimeException("Flight not found"));
 
-        if (flight.getAvailableSeats() < bookingDetails.getSeatsBooked()) {
+        if (flight.getAvailableSeats() < bookingDetails.getSeatsBooked())
             throw new RuntimeException("Not enough seats available");
-        }
 
         flight.setAvailableSeats(flight.getAvailableSeats() - bookingDetails.getSeatsBooked());
         flightRepo.save(flight);
@@ -52,7 +55,6 @@ public class BookingService {
         booking.setUser(user);
         booking.setFlight(flight);
         booking.setBookingDetails(bookingDetails);
-
         return bookingRepo.save(booking);
     }
 
@@ -66,18 +68,23 @@ public class BookingService {
     public Iterable<Booking> getAllBookings() {
         return bookingRepo.findAll();
     }
-    public BookingDetails update(BookingDetails details) {
-        BookingDetails booking = getBookingById(details.getId());
-        if (booking.getSeatsBooked() != null)
-            booking.setSeatsBooked(details.getSeatsBooked());
-        if (booking.getSeatsBooked() != null)
-            booking.setStatus(details.getStatus());
-        booking.setBookingTime(LocalDateTime.now());
-        return detailsRepo.save(booking);
+    public void update(Long bookingId, BookingDetails details) {
+        BookingDetails existing = detailsRepo.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking details not found with ID: " + bookingId));
+        if (details.getSeatsBooked() != null) {
+            existing.setSeatsBooked(details.getSeatsBooked());
+        }
+        if (details.getStatus() != null) {
+            existing.setStatus(details.getStatus());
+        }
+        existing.setBookingTime(LocalDateTime.now());
+        detailsRepo.save(existing);
     }
+
+
     public void cancel(Long bookingId) {
         BookingDetails booking = getBookingById(bookingId);
-        booking.setStatus("Booking Has Been Cancelled...");
+        booking.setStatus("Booking-Cancelled...");
         detailsRepo.save(booking);
     }
     public void cancelAll(){

@@ -21,7 +21,6 @@ public class Booking {
 
     public Booking() {
     }
-
     public Booking(Long id, User user, Flight flight, BookingDetails bookingDetails) {
         this.id = id;
         this.user = user;
