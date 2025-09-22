@@ -24,7 +24,6 @@ public class Flight {
     @Column
     @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate date;
-
     @Column
     @Enumerated(EnumType.STRING)
     Shift shift;

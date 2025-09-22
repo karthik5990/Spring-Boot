@@ -23,8 +23,4 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Internal Server Error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String> handleJsonParseError(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body("Invalid or empty value for 'shift'. Please provide a valid enum constant.");
-    }
 }
