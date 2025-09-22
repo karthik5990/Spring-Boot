@@ -1,33 +1,29 @@
-Flight Booking System
-Overview
+✈️ Flight Booking System
 
-This project is a Spring Boot Flight Booking System designed to manage flights, users, and bookings. It allows users to:
+📖 Overview
 
-Add, update, retrieve, and delete flights.
+This project is a Spring Boot Flight Booking System that enables users to:
+•	Manage flights (Add, Search, Update, Delete).
+•	Book flights and modify/cancel bookings.
+•	View booking history for each user.
+The system follows a layered architecture (Entity → Repository → Service → Controller) ensuring maintainability and scalability.
+________________________________________
 
-Book flights and manage bookings.
 
-View booking history.
+🛠 Technologies Used
 
-The project follows a layered architecture with Entities, Services, and Controllers.
+•	Java 23
+•	Spring Boot 3.x
+•	Spring Data JPA / Hibernate
+•	H2 Database (or MySQL/PostgreSQL)
+•	Maven
+•	Lombok (optional)
+•	Postman / Swagger for API testing
+________________________________________
 
-Technologies Used
 
-Java 23
+📂 Project Structure
 
-Spring Boot 3.x
-
-Spring Data JPA / Hibernate
-
-H2 Database (or MySQL/PostgreSQL)
-
-Maven
-
-Lombok (optional)
-
-Postman / Swagger for API testing
-
-Project Structure
 com.Project_Flight
 │
 ├─ Entity
@@ -52,264 +48,49 @@ com.Project_Flight
 │
 └─ Application.java
 
-Setup Instructions
 
-Clone the repository:
+🚀 Setup, Build, and Run Instructions
 
-git clone https://github.com/<your-username>/flight-booking-system.git
+Prerequisites
 
+Java or higher installed on your system.
+Maven build tool installed.
+Heidi SQL installed and running.
+Git installed for version control.
 
-Navigate to the project directory:
+Setup Your Database
 
-cd flight-booking-system
+Create a new database in Heidi SQL.
+Update your application's src/main/resources/application.properties with your database details.
+Run Spring Boot Application of Banking****
+Use tools like Postman to test the REST API endpoints.
 
+🌐 API Endpoints
 
-Build the project using Maven:
+✈️ Flight Endpoints
 
-mvn clean install
-
-
-Run the Spring Boot application:
-
-mvn spring-boot:run
-
-
-Test APIs at http://localhost:2003/ using Postman or Swagger.
-
-Flight Endpoints
-1) POST: Add a Flight
-
-URL: http://localhost:2003/flights/add
-
-Request JSON:
-
-{
-    "id": 101,
-    "flightNumber": "AI202",
-    "flightName": "Air India Express",
-    "source": "New York",
-    "destination": "London",
-    "date": "22-09-2025",
-    "shift": "EVENING",
-    "price": 850.75,
-    "availableSeats": 134
-}
-
-2) POST: Search for a Flight
-
-URL: http://localhost:2003/flights/search
-
-Request JSON:
-
-{
-  "source": "New York",
-  "destination": "London",
-  "date": "22-09-2025",
-  "shift": "EVENING"
-}
+Method	      Endpoint	             Description
+POST	-	/flights/add	-	Add a new flight record
+POST	-	/flights/search	-	Search flights by source, destination, date, and shift
+GET	    -	/flights/{id}	-	Retrieve a flight by its ID
+PUT	    -	/flights/{id}	-	Update flight details by ID
+DELETE	-	/flights/{id}	-	Delete a flight by ID
 
 
-Response Example:
+👤 User Endpoints
 
-[
-  {
-    "id": 101,
-    "flightNumber": "AI202",
-    "flightName": "Air India Express",
-    "source": "New York",
-    "destination": "London",
-    "date": "22-09-2025",
-    "shift": "EVENING",
-    "price": 850.75,
-    "availableSeats": 134
-  }
-]
+Method	     Endpoint	     Description
+POST	-	/users/add	-	Add a new user
+GET	    -   /users/{id}	-	Get user details by ID
+PUT	  	-   /users/{id}	-	Update user details
+DELETE	-	/users/{id}	-	Delete a user
 
-3) GET: Get a Flight by ID
+🧾 Booking Endpoints
 
-URL: http://localhost:2003/flights/110
+Method	         Endpoint	                                              Description
+POST	-	/bookings/{id}?userId={userId}&flightId={flightId}	-	Add a booking for a user and flight
+GET	    -	/bookings/{id}	                                    -	Retrieve booking by ID
+PUT	    -	/bookings/{id}	                                    -	Update booking details by ID
+DELETE	-	/bookings/{id}	                                    -	Cancel a booking by ID
+GET	    -	/bookings/history/{userId}	                        -	Get booking history for a specific user
 
-Response Example:
-
-{
-    "id": 110,
-    "flightNumber": "BA303",
-    "flightName": "British Airways",
-    "source": "London",
-    "destination": "New York",
-    "date": "25-09-2025",
-    "shift": "MORNING",
-    "price": 950.0,
-    "availableSeats": 150
-}
-
-4) PUT: Update a Flight
-
-URL: http://localhost:2003/flights/215
-
-Request JSON:
-
-{
-    "id": 215,
-    "flightNumber": "KP02",
-    "flightName": "Kantara Express",
-    "source": "Kandukur",
-    "destination": "Kakinada",
-    "date": "24-09-2025",
-    "shift": "AFTERNOON",
-    "price": 1000.0,
-    "availableSeats": 120
-}
-
-5) DELETE: Delete a Flight
-
-URL: http://localhost:2003/flights/215
-
-Response:
-
-The 215 flight has been deleted...
-
-Booking Endpoints
-6) POST: Add Booking
-
-URL: http://localhost:2003/bookings/7?userId=1&flightId=108
-
-Request JSON:
-
-{
-  "id": 4,
-  "seatsBooked": 3
-}
-
-Response Example:
-
-{
-    "id": 4,
-    "user": {
-        "id": 3,
-        "name": "Hothri",
-        "email": "hothri22@gmail.com",
-        "password": "Hothri1222",
-        "purposeOfVisit": "Work-Based"
-    },
-    "flight": {
-        "id": 178,
-        "flightNumber": "6E320",
-        "flightName": "IndiGo",
-        "source": "New Delhi",
-        "destination": "Hong Kong",
-        "date": "26-09-2025",
-        "shift": "NIGHT",
-        "price": 5500.0,
-        "availableSeats": 147
-    },
-    "bookingDetails": {
-        "id": 4,
-        "bookingTime": "22-09-2025 15:53",
-        "status": "BOOKING-CONFIRMED",
-        "seatsBooked": 2,
-        "totalPrice": 16500.0
-    }
-}
-
-7) GET: Get Booking by ID
-
-URL: http://localhost:2003/bookings/4
-
-Response Example:
-
-{
-    "id": 4,
-    "user": {
-        "id": 3,
-        "name": "Hothri",
-        "email": "hothri22@gmail.com",
-        "password": "Hothri1222",
-        "purposeOfVisit": "Work-Based"
-    },
-    "flight": {
-        "id": 178,
-        "flightNumber": "6E320",
-        "flightName": "IndiGo",
-        "source": "New Delhi",
-        "destination": "Hong Kong",
-        "date": "26-09-2025",
-        "shift": "NIGHT",
-        "price": 5500.0,
-        "availableSeats": 147
-    },
-    "bookingDetails": {
-        "id": 4,
-        "bookingTime": "22-09-2025 15:53",
-        "status": "BOOKING-CONFIRMED",
-        "seatsBooked": 2,
-        "totalPrice": 16500.0
-    }
-}
-8) PUT: Update Booking
-
-URL: http://localhost:2003/bookings/4
-
-Request JSON:
-
-{
-    "id": 4,
-    "seatsBooked": 2
-}
-
-
-Response Example:
-
-{
-    "id": 4,
-    "userId": 3,
-    "flightId": 178,
-    "seatsBooked": 2,
-    "bookingDate": "22-09-2025",
-    "totalPrice": 16500
-}
-
-9) DELETE: Delete Booking
-
-URL: http://localhost:2003/bookings/4
-
-Response:
-
-Booking cancelled with ID: 4
-
-10) GET: Get User Booking History
-
-URL: http://localhost:2003/bookings/history/1
-
-Response Example:
-
-[
-    {
-        "id": 4,
-        "user": {
-            "id": 3,
-            "name": "Hothri",
-            "email": "hothri22@gmail.com",
-            "password": "Hothri1222",
-            "purposeOfVisit": "Work-Based"
-        },
-        "flight": {
-            "id": 178,
-            "flightNumber": "6E320",
-            "flightName": "IndiGo",
-            "source": "New Delhi",
-            "destination": "Hong Kong",
-            "date": "26-09-2025",
-            "shift": "NIGHT",
-            "price": 5500.0,
-            "availableSeats": 147
-        },
-        "bookingDetails": {
-            "id": 4,
-            "bookingTime": "22-09-2025 15:29",
-            "status": "Booking-Cancelled...",
-            "seatsBooked": 2,
-            "totalPrice": 16500.0
-        }
-    }
-]
